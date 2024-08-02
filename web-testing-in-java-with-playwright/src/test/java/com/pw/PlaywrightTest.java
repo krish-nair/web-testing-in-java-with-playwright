@@ -4,6 +4,7 @@ import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.options.AriaRole;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -31,10 +32,10 @@ public class PlaywrightTest {
             Page page = browser.newPage();
             LOG.info("Browser is launched...");
             page.navigate(prop.getProperty("url"));
-            page.click("text = Add a new computer");
+            String text = page.getByRole(AriaRole.CELL, new Page.GetByRoleOptions().setName("Computer name")).innerText();
 
             String getPageTitle = page.title();
-            LOG.info("Page title is '{}'", getPageTitle);
+            LOG.info("Table row '{}'", text);
         }
     }
 
