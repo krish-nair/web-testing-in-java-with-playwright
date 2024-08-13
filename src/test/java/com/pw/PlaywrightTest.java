@@ -19,25 +19,16 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
-public class PlaywrightTest {
-    private Properties prop;
-    private final Logger LOG = LoggerFactory.getLogger(PlaywrightTest.class);
+public class PlaywrightTest extends BaseTest{
+
     @Test
     public void playwrightTest(){
-        prop = readProperties();
-        try(Playwright playwright = Playwright.create()) {
-            BrowserType browserType = playwright.chromium();
-            Browser browser = browserType.launch(new BrowserType.LaunchOptions().setHeadless(false).setSlowMo(3000));
-            Page page = browser.newPage();
-            LOG.info("Browser is launched...");
-            page.navigate(prop.getProperty("url3"));
+        page.click("//button[text()='Start']");
+        Locator loader = page.locator("#loading");
 
-            page.click("//button[text()='Start']");
-            Locator loader = page.locator("#loading");
-
-//            loader.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
-            Assertions.assertEquals(page.locator("text = Hello World!").innerText(), "Hello World!");
-            //page.isVisible("#loading", new Page.IsVisibleOptions());
+        loader.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
+        Assertions.assertEquals(page.locator("text = Hello World!").innerText(), "Hello World");
+        //page.isVisible("#loading", new Page.IsVisibleOptions());
             /*String path = System.getProperty("user.dir");
             page.setInputFiles("#file-upload", Paths.get(path + File.separator + "pom.xml"));
             page.click("#file-submit");
@@ -56,7 +47,6 @@ public class PlaywrightTest {
 //
 //            String getPageTitle = page.title();
 //            LOG.info("Table row '{}'", text);
-        }
     }
 
     @Test
@@ -106,5 +96,10 @@ public class PlaywrightTest {
             String getPageTitle = page.title();
             LOG.info("Page title is '{}'", getPageTitle);
         }
+    }
+
+    @Test
+    public void sauceLabsTest(){
+
     }
 }
